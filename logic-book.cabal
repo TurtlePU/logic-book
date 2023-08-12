@@ -36,6 +36,17 @@ executable logic-book
     hs-source-dirs:   app
     default-language: Haskell2010
 
+library unordered-model
+    exposed-modules:  Data.HashModel
+    other-modules:    Data.Result
+    build-depends:
+      logic-book
+      , base
+      , unordered-containers
+      , hashable
+    hs-source-dirs:   unordered-model
+    default-language: Haskell2010
+
 library
     exposed-modules:
       Data.ArrayModel
