@@ -2,27 +2,27 @@
 
 module Parser where
 
-import Control.Applicative ((<|>), liftA2)
+import Control.Applicative (liftA2, (<|>))
 import Control.Applicative.Combinators (between, many)
 import Control.Monad.Combinators.Expr (Operator (..), makeExprParser)
-import Data.Text (Text)
+import Data.Text (Text, pack)
 import Data.Void (Void)
 import Logic.ModalProp (ModalProp (..))
 import Text.Megaparsec (ParseErrorBundle, Parsec, eof, parse)
-import Text.Megaparsec.Byte.Lexer (symbol, lexeme)
-import Text.Megaparsec.Char (space1, letterChar, alphaNumChar)
+import Text.Megaparsec.Byte.Lexer (lexeme, symbol)
+import Text.Megaparsec.Char (alphaNumChar, letterChar, space1)
 
 type ParseError = ParseErrorBundle Text Void
 
 type Parser = Parsec Void Text
 
-parseProp :: String -> Text -> Either ParseError (ModalProp String)
+parseProp :: String -> Text -> Either ParseError (ModalProp Text)
 parseProp = parse (expr <* eof)
   where
-    expr :: Parser (ModalProp String)
+    expr :: Parser (ModalProp Text)
     expr =
       makeExprParser
-        (parens "(" expr ")" <|> var)
+        (parens "(" expr ")" <|> fmap Var var)
         [ [ prefix "!" Not,
             prefix "[]" Box,
             prefix "<>" Diamond
@@ -32,8 +32,8 @@ parseProp = parse (expr <* eof)
           [infixR "->" (:->:)]
         ]
 
-    var :: Parser (ModalProp String)
-    var = fmap Var . lexeme space1 $ liftA2 (:) letterChar (many alphaNumChar)
+    var :: Parser Text
+    var = lexeme space1 . fmap pack $ liftA2 (:) letterChar (many alphaNumChar)
 
     parens :: Text -> Parser a -> Text -> Parser a
     parens open parser close = between (sym open) (sym close) parser
