@@ -10,7 +10,7 @@ import Data.Void (Void)
 import Logic.ModalProp (ModalProp (..))
 import Text.Megaparsec (ParseErrorBundle, Parsec, eof, parse)
 import Text.Megaparsec.Byte.Lexer (lexeme, symbol)
-import Text.Megaparsec.Char (alphaNumChar, letterChar, space1)
+import Text.Megaparsec.Char (alphaNumChar, letterChar, space)
 
 type ParseError = ParseErrorBundle Text Void
 
@@ -33,7 +33,7 @@ parseProp = parse (expr <* eof)
         ]
 
     var :: Parser Text
-    var = lexeme space1 . fmap pack $ liftA2 (:) letterChar (many alphaNumChar)
+    var = lexeme space . fmap pack $ liftA2 (:) letterChar (many alphaNumChar)
 
     parens :: Text -> Parser a -> Text -> Parser a
     parens open parser close = between (sym open) (sym close) parser
@@ -46,4 +46,4 @@ parseProp = parse (expr <* eof)
     infixR name f = InfixR (f <$ sym name)
 
     sym :: Text -> Parser Text
-    sym = symbol space1
+    sym = symbol space

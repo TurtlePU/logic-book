@@ -23,6 +23,7 @@ data HashModel w p = HModel
 data MappingError w p
   = UnknownWorlds (HashSet w)
   | UnknownProps (HashSet p)
+  deriving (Show)
 
 instance
   (Hashable w, Hashable p) =>

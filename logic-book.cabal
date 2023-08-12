@@ -32,12 +32,15 @@ executable logic-book
       , megaparsec
       , parser-combinators
       , text
+      , unordered-model
       , model-classes
     hs-source-dirs:   app
     default-language: Haskell2010
 
 library unordered-model
-    exposed-modules:  Data.HashModel
+    exposed-modules:
+      Data.HashModel
+      , Data.HashModelInfo
     other-modules:    Data.Result
     build-depends:
       base
