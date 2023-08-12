@@ -22,7 +22,7 @@ main = do
       (world, rest) <- T.breakOn " " <$> TIO.getLine
       case parseProp "<stdin>" (T.strip rest) of
         Left err -> putStrLn (errorBundlePretty err)
-        Right formula -> print ((model, world) |= formula :: Either (MappingError T.Text T.Text) Bool)
+        Right formula -> print ((model, world) |= formula)
   where
     getWorlds :: IO [(T.Text, [T.Text], [T.Text])]
     getWorlds = do
