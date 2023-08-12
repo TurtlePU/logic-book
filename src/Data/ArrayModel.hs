@@ -11,7 +11,7 @@ import Algebra.Frame (Frame (..))
 import Data.Array.BitArray (BitArray)
 import qualified Data.Array.BitArray as B
 import Data.Ix (Ix)
-import Logic.ModalProp (ModalProp)
+import Logic.ModalProp (ModalProp, eval)
 import Logic.Model (Model (..))
 
 data ArrayModel w p = AModel
@@ -32,4 +32,4 @@ instance (Ix w, Ix p) => Model (ArrayModel w p) p (ArrayTruthness w) where
      in Truthness (B.ixmap (w0, wn) (,p) (valuation m))
 
 instance (Ix w, Ix p) => Model (ArrayModel w p, w) (ModalProp p) Bool where
-  (m, w) |= p = truthness (m |= p) B.! w
+  (m, w) |= p = truthness (eval m p) B.! w

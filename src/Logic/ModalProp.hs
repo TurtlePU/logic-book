@@ -21,18 +21,18 @@ data ModalProp p
   | ModalProp p :->: ModalProp p
   | Box (ModalProp p)
   | Diamond (ModalProp p)
-  deriving (Functor)
+  deriving (Functor, Foldable, Traversable)
 
 makeBaseFunctor ''ModalProp
 
-instance (Frame m b, Model m p b) => Model m (ModalProp p) b where
-  w |= f = cata step (fmap (w |=) f)
-    where
-      step = \case
-        VarF b -> b
-        NotF b -> complement b
-        a :/\:$ b -> a .&. b
-        a :\/:$ b -> a .|. b
-        a :->:$ b -> a .>. b
-        BoxF b -> box w b
-        DiamondF b -> diamond w b
+eval :: (Frame m b, Model m p b) => m -> ModalProp p -> b
+eval w f = cata step (fmap (w |=) f)
+  where
+    step = \case
+      VarF b -> b
+      NotF b -> complement b
+      a :/\:$ b -> a .&. b
+      a :\/:$ b -> a .|. b
+      a :->:$ b -> a .>. b
+      BoxF b -> box w b
+      DiamondF b -> diamond w b
