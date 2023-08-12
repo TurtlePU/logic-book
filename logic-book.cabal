@@ -28,11 +28,11 @@ executable logic-book
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:
-      logic-book
-      , base
+      base
       , megaparsec
       , parser-combinators
       , text
+      , model-classes
     hs-source-dirs:   app
     default-language: Haskell2010
 
@@ -40,24 +40,31 @@ library unordered-model
     exposed-modules:  Data.HashModel
     other-modules:    Data.Result
     build-depends:
-      logic-book
-      , base
+      base
       , unordered-containers
       , hashable
+      , array-model
+      , model-classes
     hs-source-dirs:   unordered-model
     default-language: Haskell2010
 
-library
+library array-model
+    exposed-modules:  Data.ArrayModel
+    build-depends:
+      base
+      , bitwise
+      , model-classes
+    hs-source-dirs:   array-model
+    default-language: Haskell2010
+
+library model-classes
     exposed-modules:
-      Data.ArrayModel
-      , Logic.ModalProp
+      Logic.ModalProp
       , Logic.Model
-    other-modules:
-      Algebra.Boolean
+      , Algebra.Boolean
       , Algebra.Frame
     build-depends:
-      base ^>=4.16.4.0,
-      bitwise,
-      recursion-schemes
-    hs-source-dirs:   src
+      base ^>=4.16.4.0
+      , recursion-schemes
+    hs-source-dirs:   model-classes
     default-language: Haskell2010
