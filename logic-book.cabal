@@ -49,10 +49,13 @@ library unordered-model
     default-language: Haskell2010
 
 library array-model
-    exposed-modules:  Data.ArrayModel
+    exposed-modules:
+      Data.ArrayModel
+      , Data.ArrayModelInfo
     build-depends:
       base
       , bitwise
+      , containers
       , model-classes
     hs-source-dirs:   array-model
     default-language: Haskell2010

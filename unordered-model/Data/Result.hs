@@ -19,6 +19,8 @@ instance Monoid e => Applicative (Result e) where
   _ <*> Err r = Err r
   Ok l <*> Ok r = Ok (l r)
 
+infixr 0 ^^^
+
 (^^^) :: (e -> e') -> Result e a -> Either e' a
 f ^^^ (Err e) = Left (f e)
 _ ^^^ (Ok a) = Right a
